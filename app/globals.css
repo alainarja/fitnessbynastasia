@@ -1,0 +1,340 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Fitness by Nastasia — brand design system (Tailwind v4 @theme tokens)
+   Warm cream editorial. Playfair display + Manrope body. Scarlet accent.
+   ========================================================================== */
+
+@theme {
+  /* Brand colors */
+  --color-cream: #f1e8d9;
+  --color-card: #fbf5ea;
+  --color-cream-deep: #e8dac4;
+  --color-espresso: #3a2a1e;
+  --color-brown: #5a4434;
+  --color-ink: #241813;
+  --color-red: #c02d1e;
+  --color-maroon: #6e2a22;
+  --color-blush: #e7d3c4;
+
+  /* Fonts (wired via next/font in layout.tsx) */
+  --font-display: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --font-body: var(--font-manrope), "Manrope", system-ui, sans-serif;
+
+  /* Radius */
+  --radius-card: 8px;
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-espresso);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-espresso);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+  }
+
+  /* All photography reads black and white by default to match her grid. */
+  .photo,
+  .photo img {
+    filter: grayscale(100%) contrast(1.02);
+  }
+
+  ::selection {
+    background-color: var(--color-red);
+    color: var(--color-card);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-red);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Respect reduced motion globally. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Layout helpers
+   -------------------------------------------------------------------------- */
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 80rem; /* 1280px */
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-page { padding-inline: 2.5rem; }
+}
+
+/* Small uppercase letter-spaced eyebrow/label */
+@utility label-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Thin red rule accent (about 120 x 6) */
+@utility red-rule {
+  display: block;
+  width: 120px;
+  height: 6px;
+  background-color: var(--color-red);
+  border-radius: 999px;
+}
+
+/* --------------------------------------------------------------------------
+   Editorial motifs
+   -------------------------------------------------------------------------- */
+
+/* Oversized faint "ghost" numeral behind section labels */
+.ghost-numeral {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.8;
+  color: var(--color-espresso);
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ghost-numeral--light {
+  color: var(--color-cream);
+  opacity: 0.08;
+}
+
+/* --------------------------------------------------------------------------
+   Scroll reveal (paired with the Reveal client component)
+   Direction variants set the starting transform; .is-visible resets to none.
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s var(--ease-soft),
+    transform 0.8s var(--ease-soft),
+    filter 0.8s var(--ease-soft);
+  will-change: opacity, transform;
+}
+.reveal[data-dir="left"] { transform: translateX(-32px); }
+.reveal[data-dir="right"] { transform: translateX(32px); }
+.reveal[data-dir="scale"] { transform: scale(0.94); }
+.reveal[data-dir="blur"] { transform: translateY(24px); filter: blur(8px); }
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; filter: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Image reveal: a soft clip-path wipe paired with a slow Ken Burns settle.
+   -------------------------------------------------------------------------- */
+.img-reveal {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1s var(--ease-soft);
+}
+.img-reveal.is-visible {
+  clip-path: inset(0 0 0 0);
+}
+.img-reveal img {
+  transform: scale(1.12);
+  transition: transform 1.6s var(--ease-soft);
+}
+.img-reveal.is-visible img {
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .img-reveal { clip-path: none; }
+  .img-reveal img { transform: none; }
+}
+
+/* Slow ambient zoom for the hero portrait. */
+@keyframes ken-burns {
+  from { transform: scale(1.04); }
+  to { transform: scale(1.11); }
+}
+.ken-burns { animation: ken-burns 18s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Marquee strip (editorial scrolling words). Pure CSS, pauses on hover.
+   -------------------------------------------------------------------------- */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee-strip:hover .marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Primary button: scarlet sheen sweep on hover + lift.
+   -------------------------------------------------------------------------- */
+.btn-sheen { position: relative; overflow: hidden; }
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.28) 50%, transparent 100%);
+  transition: transform 0.6s var(--ease-soft);
+}
+@media (hover: hover) {
+  .btn-sheen:hover::after { transform: translateX(120%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-sheen::after { display: none; }
+}
+
+/* Animated arrow that nudges on group hover. */
+.arrow-nudge { transition: transform 0.25s var(--ease-soft); }
+@media (hover: hover) {
+  .group:hover .arrow-nudge { transform: translateX(4px); }
+}
+
+/* Emoji pop: grows on hover, bounces when an answer is chosen. */
+@keyframes emoji-pop {
+  0% { transform: scale(1) rotate(0); }
+  40% { transform: scale(1.4) rotate(-8deg); }
+  70% { transform: scale(1.15) rotate(4deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+.emoji-pop { display: inline-block; transition: transform 0.2s var(--ease-soft); }
+@media (hover: hover) {
+  .group:hover .emoji-pop { transform: scale(1.18); }
+}
+.emoji-pop[data-flash="true"] { animation: emoji-pop 0.4s var(--ease-soft); }
+@media (prefers-reduced-motion: reduce) {
+  .emoji-pop[data-flash="true"] { animation: none; }
+}
+
+/* Hover lift for cards. */
+.lift {
+  transition:
+    transform 0.35s var(--ease-soft),
+    box-shadow 0.35s var(--ease-soft),
+    border-color 0.35s var(--ease-soft);
+}
+@media (hover: hover) {
+  .lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px -24px rgba(36, 24, 19, 0.45);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Animated underline for nav links.
+   -------------------------------------------------------------------------- */
+.link-underline { position: relative; }
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 100%;
+  background: var(--color-red);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s var(--ease-soft);
+}
+.link-underline[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+@media (hover: hover) {
+  .link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Sticky opt-in bar slide (on /shift)
+   -------------------------------------------------------------------------- */
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.animate-slide-up { animation: slide-up 0.4s var(--ease-soft) both; }
+
+/* --------------------------------------------------------------------------
+   Hero entrance: staggered rise. Applied via inline animation-delay.
+   -------------------------------------------------------------------------- */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise-in {
+  opacity: 0;
+  animation: rise-in 0.9s var(--ease-soft) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise-in { opacity: 1; animation: none; }
+}
+
+/* Subtle floating accent (decorative dots / shapes). */
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.float-soft { animation: float-soft 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .float-soft { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Film grain overlay for editorial texture (very subtle, fixed, non-blocking).
+   -------------------------------------------------------------------------- */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
