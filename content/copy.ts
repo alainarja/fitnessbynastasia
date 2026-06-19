@@ -167,7 +167,7 @@ export const shift = {
 export const thankYou = {
   headlineLead: "You are all",
   headlineEmphasis: "set.",
-  sub: "Your guide is ready to download below, and I will personally reach out with your tailored next step by email or WhatsApp. Keep an eye out, and check your spam folder just in case.",
+  sub: "Thank you. I will personally contact you by email or WhatsApp with your free guide and your tailored next step. Keep an eye on your inbox, and check your spam folder just in case.",
   nextStepEyebrow: "Your next step",
   nextStepHeadlineLead: "Want help putting it into",
   nextStepHeadlineEmphasis: "action?",

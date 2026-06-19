@@ -3,7 +3,6 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { ShiftQuiz } from "@/components/ShiftQuiz";
 import { ShiftIntro } from "@/components/ShiftIntro";
 import { Reveal } from "@/components/Reveal";
-import { TestimonialCard } from "@/components/TestimonialCard";
 import { shift } from "@/content/copy";
 
 export const metadata: Metadata = {
@@ -64,27 +63,6 @@ export default function ShiftPage() {
         </div>
       </section>
 
-      {/* Who this is for */}
-      <section className="container-page py-16 sm:py-20">
-        <Reveal>
-          <p className="mx-auto max-w-2xl text-center font-display text-2xl leading-relaxed text-espresso sm:text-3xl text-balance">
-            {shift.forWho}
-          </p>
-        </Reveal>
-      </section>
-
-      {/* Testimonial placeholders */}
-      <section className="bg-ink text-cream">
-        <div className="container-page py-16 sm:py-20">
-          <div className="grid gap-5 md:grid-cols-2">
-            {[0, 1].map((i) => (
-              <Reveal key={i} delay={i * 80}>
-                <TestimonialCard tone="dark" />
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 }

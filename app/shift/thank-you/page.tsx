@@ -60,12 +60,6 @@ export default async function ThankYouPage({
             {thankYou.headlineLead} <em className="font-display italic text-red">{thankYou.headlineEmphasis}</em>
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-brown">{thankYou.sub}</p>
-
-          <div className="mt-8">
-            <Button href={site.guidePdfPath} variant="outline" size="lg">
-              {thankYou.downloadCta}
-            </Button>
-          </div>
         </div>
       </section>
 
