@@ -17,7 +17,7 @@ import { site } from "@/content/site";
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { t } = useLocale();
-  const focus = pathname === "/shift";
+  const focus = pathname === "/shift" || pathname === "/calculator";
 
   if (focus) {
     return (
