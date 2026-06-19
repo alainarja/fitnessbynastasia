@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 type Sex = "female" | "male";
-type Goal = "maintenance" | "loss" | "gain";
+type Goal = "maintenance" | "loss" | "gain" | "recomp";
 
 const activityOptions = [
   { value: 1.2, label: "I don't really train yet", note: "Mostly sitting" },
@@ -73,6 +73,11 @@ export function BmrCalculator() {
       return {
         headline: "Your fat loss calories (20 to 25% deficit)",
         value: `${round10(tdee * 0.75).toLocaleString()} to ${round10(tdee * 0.8).toLocaleString()} kcal / day`,
+      };
+    if (goal === "recomp")
+      return {
+        headline: "Your recomposition calories (lose fat and gain muscle)",
+        value: `${round10(tdee * 0.9).toLocaleString()} to ${tdee.toLocaleString()} kcal / day`,
       };
     return {
       headline: "Your weight gain calories (20 to 25% surplus)",
@@ -198,6 +203,7 @@ export function BmrCalculator() {
           <div className="grid gap-3">
             {[
               { v: "maintenance" as Goal, label: "Give me my maintenance calories", emoji: "⚖️" },
+              { v: "recomp" as Goal, label: "Recomposition (lose fat and gain muscle)", emoji: "🔄" },
               { v: "loss" as Goal, label: "Fat loss (20 to 25% deficit)", emoji: "🔥" },
               { v: "gain" as Goal, label: "Weight gain (20 to 25% surplus)", emoji: "💪" },
             ].map((g) => {
