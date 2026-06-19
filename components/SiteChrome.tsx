@@ -25,12 +25,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         <header className="border-b border-brown/12 bg-cream/80 backdrop-blur-sm">
           <div className="container-page flex h-16 items-center justify-between sm:h-20">
             <Logo />
-            <div className="flex items-center gap-3">
-              <LanguageToggle />
-              <Link href="/" className="label-eyebrow text-brown/70 transition-colors hover:text-red">
-                {t.cta.backToSite}
-              </Link>
-            </div>
+            <LanguageToggle />
           </div>
         </header>
 
