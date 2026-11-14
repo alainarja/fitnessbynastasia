@@ -9,7 +9,7 @@ import { site, whatsappLink } from "@/content/site";
 
 export function Footer() {
   const year = 2026; // static to avoid build-time Date; update yearly or wire to env.
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   const nav = [
     { href: "/about", label: t.nav.about },
@@ -83,6 +83,12 @@ export function Footer() {
         <div className="mt-12 flex flex-col gap-3 border-t border-cream/10 pt-6 text-xs text-cream/50 sm:flex-row sm:items-center sm:justify-between">
           <p>
             &copy; {year} {site.brandName}. {t.footer.rights}
+          </p>
+          <p>
+            {locale === "ar" ? "صنع بـ" : "Built with"} <span aria-label="love" className="text-red-500">♥</span> {locale === "ar" ? "بواسطة" : "by"}{" "}
+            <a href="https://mapos.tech" target="_blank" rel="noopener noreferrer" className="hover:text-cream">
+              mapos.tech
+            </a>
           </p>
           <div className="flex gap-5">
             <Link href="/privacy" className="hover:text-cream">
